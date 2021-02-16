@@ -43,32 +43,58 @@ https://github.com/mvolkmann/svelte-todo
   } catch (err) {}
 </script>
 
-<div>
-  <h1>ToDo List</h1>
-  <div>
-    {status}
-    <button on:click={deleteCompleted}>Delete Completed</button>
+<div class="main">
+  <div class="app">
+    <h1>ToDo List</h1>
+    <div class="div">
+      <p>{status}</p>
+      <button style="margin-left: 0px" on:click={deleteCompleted}>Delete Completed</button>
+    </div>
+    <div class="div">
+      <form on:submit|preventDefault>
+        <input
+          size="30"
+          placeholder="Enter a new todo here..."
+          bind:value={todoText}
+        />
+        <button disabled={!todoText} on:click={addTodo}>Add</button>
+      </form>
+    </div>
+    <div class="div">
+      <ul>
+        {#each todos as todo}
+          <Todo
+            {todo}
+            on:delete={() => deleteTodo(todo.id)}
+            on:toggleDone={() => toggleDone(todo)}
+          />
+        {/each}
+      </ul>
+    </div>
   </div>
-  <form on:submit|preventDefault>
-    <input
-      size="30"
-      placeholder="Enter a new todo here..."
-      bind:value={todoText}
-    />
-    <button disabled={!todoText} on:click={addTodo}>Add</button>
-  </form>
-  <ul>
-    {#each todos as todo}
-      <Todo
-        {todo}
-        on:delete={() => deleteTodo(todo.id)}
-        on:toggleDone={() => toggleDone(todo)}
-      />
-    {/each}
-  </ul>
 </div>
 
 <style>
+  .main {
+    margin: 0;
+    color: #212529;
+    background-color: #fff;
+  }
+
+  .app {
+    max-width: 400px;
+    width: 90%;
+    margin: 0 auto;
+    padding: 40px;
+    border-radius: 4px;
+    color: #505e6c;
+    box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.1);
+  }
+
+  .div {
+    margin-top: 10px;
+  }
+
   button {
     margin-left: 10px;
   }
