@@ -1,30 +1,81 @@
+<!-- This code is a mix of
+https://github.com/sveltejs/svelte-todomvc and
+https://github.com/mvolkmann/svelte-todo
+-->
 <script>
-	export let name;
+  import Todo from "./Todo.svelte";
+  import { v4 as uuidv4 } from "uuid";
+
+  const createTodo = (text, done = false) => ({ id: uuidv4(), text, done });
+
+  let todoText = "";
+  let todos;
+
+  try {
+    todos = JSON.parse(localStorage.getItem("todos-svelte")) || [];
+  } catch (err) {
+    todos = [];
+  }
+
+  $: uncompletedCount = todos.filter((t) => !t.done).length;
+  $: status = `${uncompletedCount} of ${todos.length} remaining.`;
+
+  function addTodo() {
+    todos = todos.concat(createTodo(todoText));
+    todoText = "";
+  }
+
+  function deleteCompleted() {
+    todos = todos.filter((t) => !t.done);
+  }
+
+  function deleteTodo(todoId) {
+    todos = todos.filter((t) => t.id !== todoId);
+  }
+
+  function toggleDone(todo) {
+    const { id } = todo;
+    todos = todos.map((t) => (t.id === id ? { ...t, done: !t.done } : t));
+  }
+
+  $: try {
+    localStorage.setItem("todos-svelte", JSON.stringify(todos));
+  } catch (err) {}
 </script>
 
-<main>
-	<h1>Hello {name}!</h1>
-	<p>Visit the <a href="https://svelte.dev/tutorial">Svelte tutorial</a> to learn how to build Svelte apps.</p>
-</main>
+<div>
+  <h1>ToDo List</h1>
+  <div>
+    {status}
+    <button on:click={deleteCompleted}>Delete Completed</button>
+  </div>
+  <form on:submit|preventDefault>
+    <input
+      size="30"
+      placeholder="Enter a new todo here..."
+      bind:value={todoText}
+    />
+    <button disabled={!todoText} on:click={addTodo}>Add</button>
+  </form>
+  <ul>
+    {#each todos as todo}
+      <Todo
+        {todo}
+        on:delete={() => deleteTodo(todo.id)}
+        on:toggleDone={() => toggleDone(todo)}
+      />
+    {/each}
+  </ul>
+</div>
 
 <style>
-	main {
-		text-align: center;
-		padding: 1em;
-		max-width: 240px;
-		margin: 0 auto;
-	}
+  button {
+    margin-left: 10px;
+  }
 
-	h1 {
-		color: #ff3e00;
-		text-transform: uppercase;
-		font-size: 4em;
-		font-weight: 100;
-	}
-
-	@media (min-width: 640px) {
-		main {
-			max-width: none;
-		}
-	}
+  ul {
+    list-style: none;
+    margin-left: 0px;
+    padding-left: 0px;
+  }
 </style>
