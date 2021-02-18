@@ -43,21 +43,40 @@ https://github.com/mvolkmann/svelte-todo
   } catch (err) {}
 </script>
 
-<div class="main">
-  <div class="app">
-    <h1>ToDo List</h1>
-    <div class="div">
+<svelte:head>
+  <link
+    rel="stylesheet"
+    href="https://cdn.jsdelivr.net/npm/bulma@0.9.1/css/bulma.min.css"
+  />
+  <script src="https://use.fontawesome.com/releases/v5.3.1/js/all.js"></script>
+</svelte:head>
+
+<div class="container">
+  <div class="panel">
+    <p class="panel-heading">ToDo List</p>
+    <div class="notification">
       <p>{status}</p>
-      <button style="margin-left: 0px" on:click={deleteCompleted}>Delete Completed</button>
+      <button
+        class="button is-link"
+        style="margin-left: 0px"
+        on:click={deleteCompleted}>Delete Completed</button
+      >
     </div>
-    <div class="div">
+    <div class="panel-block">
       <form on:submit|preventDefault>
-        <input
-          size="30"
-          placeholder="Enter a new todo here..."
-          bind:value={todoText}
-        />
-        <button disabled={!todoText} on:click={addTodo}>Add</button>
+        <p class="control">
+          <input
+            class="input"
+            size="30"
+            placeholder="Enter a new todo here..."
+            bind:value={todoText}
+          />
+        </p>
+        <div class="control">
+          <button class="button is-link" disabled={!todoText} on:click={addTodo}
+            >Add</button
+          >
+        </div>
       </form>
     </div>
     <div class="div">
@@ -75,28 +94,8 @@ https://github.com/mvolkmann/svelte-todo
 </div>
 
 <style>
-  .main {
-    margin: 0;
-    color: #212529;
-    background-color: #fff;
-  }
-
-  .app {
-    max-width: 400px;
-    width: 90%;
-    margin: 0 auto;
-    padding: 40px;
-    border-radius: 4px;
-    color: #505e6c;
-    box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.1);
-  }
-
-  .div {
+  .button {
     margin-top: 10px;
-  }
-
-  button {
-    margin-left: 10px;
   }
 
   ul {
