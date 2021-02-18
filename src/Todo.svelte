@@ -15,10 +15,15 @@
           type="checkbox"
           checked={todo.done}
           on:change={() => dispatch("toggleDone")}
-        />Mark As Done</label>
+          hidden
+        /><i class="fas fa-check" /></label
+      >
     </div>
     <div class="card-footer-item">
-      <button on:click={() => dispatch("delete")}>Delete</button>
+      <label class="button">
+        <button on:click={() => dispatch("delete")} hidden />
+        <i class="fas fa-trash" />
+      </label>
     </div>
   </footer>
 </div>

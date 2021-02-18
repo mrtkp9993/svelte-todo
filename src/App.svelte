@@ -51,35 +51,41 @@ https://github.com/mvolkmann/svelte-todo
   <script src="https://use.fontawesome.com/releases/v5.3.1/js/all.js"></script>
 </svelte:head>
 
-<div class="container">
-  <div class="panel">
-    <p class="panel-heading">ToDo List</p>
-    <div class="notification">
-      <p>{status}</p>
-      <button
-        class="button is-link"
-        style="margin-left: 0px"
-        on:click={deleteCompleted}>Delete Completed</button
+<div class="container is-fluid">
+  <div class="columns is-centered is-vcentered is-mobile">
+    <div class="column is-narrow" style="width: 70%">
+      <h1 class="has-text-centered title">ToDo List</h1>
+      <p class="has-text-centered">{status}</p>
+      <div class="has-text-centered">
+        <button
+          class="button is-secondary is-text has-text-centered"
+          on:click={deleteCompleted}>Delete Completed</button
+        >
+      </div>
+      <form
+        class="field has-addons"
+        style="justify-content: center"
+        on:submit|preventDefault
       >
-    </div>
-    <div class="panel-block">
-      <form on:submit|preventDefault>
-        <p class="control">
+        <div class="control">
           <input
             class="input"
             size="30"
             placeholder="Enter a new todo here..."
             bind:value={todoText}
           />
-        </p>
+        </div>
         <div class="control">
-          <button class="button is-link" disabled={!todoText} on:click={addTodo}
-            >Add</button
-          >
+          <button
+            class="button is-primary"
+            disabled={!todoText}
+            on:click={addTodo}
+            ><span class="icon is-small">
+              <i class="fas fa-plus" />
+            </span>
+          </button>
         </div>
       </form>
-    </div>
-    <div class="div">
       <ul>
         {#each todos as todo}
           <Todo
@@ -94,10 +100,6 @@ https://github.com/mvolkmann/svelte-todo
 </div>
 
 <style>
-  .button {
-    margin-top: 10px;
-  }
-
   ul {
     list-style: none;
     margin-left: 0px;
