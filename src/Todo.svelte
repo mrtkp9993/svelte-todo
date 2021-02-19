@@ -33,8 +33,4 @@
     color: gray;
     text-decoration: line-through;
   }
-
-  li {
-    margin-top: 5px;
-  }
 </style>
